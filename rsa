@@ -1,48 +1,35 @@
 #!/usr/bin/env bash
 #is a challenge
-check_factor()
-{
-	if [ $# -ne 3 ];
-        then
-                args=("$@")
-                count=0
-                num2=1
-                for a in ${args[*]};
-                do
-                        if [ $count -gt 1 ];
-                        then
-                                num2=$(echo $a*$num2 | bc)
-                        fi
-                        count=$((count + 1))
-                done
-        else
-                num2=$3
-        fi
+import sys
 
-        num1=$2
-        num=$(echo "$1" | tr ':' '=')
+def is_prime(n):
+    if n <= 1:
+        return False
+    if n <= 3:
+        return True
+    if n % 2 == 0 or n % 3 == 0:
+        return False
+    i = 5
+    while i * i <= n:
+        if n % i == 0 or n % (i + 2) == 0:
+            return False
+        i += 6
+    return True
 
-        result=$(echo "if($num2 > $num1) 1 else 0" | bc)
-	        if ((result == 1)); then
-		        numcp=$num1
-		        num1=$num2
-		        num2=$numcp
-                fi
+def factorize_and_print(n):
+    for i in range(2, n):
+        if n % i == 0 and is_prime(i) and is_prime(n // i):
+            p, q = i, n // i
+            print(f'n={p}*{q}')
+            return
 
-        echo "$num$num1*$num2"
-}
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: factors <file>")
+        sys.exit(1)
 
-if [ $# -ne 1 ]
-then
-        echo 'Usage: rsa <file>'
-        exit 1
-else
-
-        while read i
-        do
-
-                result=$(factor "$i")
-                check_factor $result
-
-        done < "$1"
-fi
+    file_name = sys.argv[1]
+    with open(file_name, 'r') as file:
+        for line in file:
+            n = int(line)
+            factorize_and_print(n)
