@@ -1,14 +1,5 @@
-#!/usr/bin/python3
-import sys
-from primes import factors
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        exit(1)
-    lpi = []
-    with open(sys.argv[1], 'r') as file:
-        lines = file.readlines()
-        for line in lines:
-            lpi.append(int(line))
-    for i in lpi:
-        j = factors(i)
-        print("{}={:d}*{}".format(i,i//j,j))
+#!/usr/bin/env bash
+# Factorize as many numbers as possible into a product of two smaller numbers.
+
+gcc factors.c -o a
+./a $1
