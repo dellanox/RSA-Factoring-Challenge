@@ -1,35 +1,20 @@
-#!/usr/bin/env bash
-#is a challenge
+#!/usr/bin/python3
 import sys
-
-def is_prime(n):
-    if n <= 1:
-        return False
-    if n <= 3:
-        return True
-    if n % 2 == 0 or n % 3 == 0:
-        return False
-    i = 5
-    while i * i <= n:
-        if n % i == 0 or n % (i + 2) == 0:
-            return False
-        i += 6
-    return True
-
-def factorize_and_print(n):
-    for i in range(2, n):
-        if n % i == 0 and is_prime(i) and is_prime(n // i):
-            p, q = i, n // i
-            print(f'n={p}*{q}')
-            return
-
+from prime import factor, primef, gen_primes
+lp = []
+with open("prime.txt", 'r') as file:
+        for line in file:
+            lp=line[:-1].split(",")
+            break
+lp = list(map(int, lp))
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: factors <file>")
-        sys.exit(1)
-
-    file_name = sys.argv[1]
-    with open(file_name, 'r') as file:
-        for line in file:
-            n = int(line)
-            factorize_and_print(n)
+        exit(1)
+    lpi = []
+    with open(sys.argv[1], 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            lpi.append(int(line))
+    for i in lpi:
+        j = factor(i, lp)
+    print("{}={}*{}".format(i,i//j,j))
